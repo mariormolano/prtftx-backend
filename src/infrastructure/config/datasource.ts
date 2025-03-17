@@ -11,9 +11,7 @@ const dataSource = new DataSource({
   ssl: {
     rejectUnauthorized: false,
   },
-  entities: [
-    // Add your entities here
-  ],
+  entities: ["src/domain/entities/*.ts"],
   migrations: [
     // Add your migrations here
   ],

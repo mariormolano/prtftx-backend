@@ -1,13 +1,18 @@
 import express from "express";
-import dataSource from "./infrastructure/config/datasource";
+import { authRouter } from "./interface/routes";
+import { dataSource } from "./infrastructure/config";
 
 const app = express();
 const port = process.env.PORT || 3000;
 const server = process.env.SERVER || "http://localhost";
 
+app.use(express.json());
+
 app.get("/", (req, res) => {
   res.send("<h1>¡El servidor está funcionando!</h1>");
 });
+
+app.use("/api", authRouter);
 
 dataSource
   .initialize()
