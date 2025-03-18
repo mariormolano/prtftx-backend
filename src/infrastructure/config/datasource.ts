@@ -12,12 +12,6 @@ const dataSource = new DataSource({
     rejectUnauthorized: false,
   },
   entities: ["src/domain/entities/*.ts"],
-  migrations: [
-    // Add your migrations here
-  ],
-  subscribers: [
-    // Add your subscribers here
-  ],
 });
 
 export default dataSource;

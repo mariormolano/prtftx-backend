@@ -1,3 +1,5 @@
 import { AuthController } from "./authController";
+import { TypesController } from "./typesController";
+import { PropertiesController } from "./propertiesController";
 
-export { AuthController };
+export { AuthController, TypesController, PropertiesController };

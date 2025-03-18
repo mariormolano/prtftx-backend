@@ -1,11 +1,5 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToMany,
-  JoinTable,
-} from "typeorm";
-import { UserRoleEnum } from "../../domain/enums";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { UserRoleEnum } from "@domain/enums";
 
 @Entity()
 export class User {
@@ -18,7 +12,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ type: "enum", enum: UserRoleEnum, default: UserRoleEnum.USER })
   role: UserRoleEnum;
 
   @Column()

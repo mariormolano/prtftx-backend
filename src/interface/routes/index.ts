@@ -1,3 +1,5 @@
 import { authRouter } from "./authRutes";
+import { typesRouter } from "./typesRutes";
+import { propertiesRouter } from "./propertiesRutes";
 
-export { authRouter };
+export { authRouter, typesRouter, propertiesRouter };

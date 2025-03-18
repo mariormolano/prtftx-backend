@@ -1,64 +1,46 @@
-import { Response, NextFunction } from "express";
-import { RequestWithUser } from "../../domain/interfaces";
+import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { User } from "../../domain/entities";
-import { dataSource } from "../../infrastructure/config";
-import { UserRoleEnum } from "../../domain/enums";
+import { User } from "@domain/entities";
+import { UserRepository } from "@infra/repositories";
 
+import { HttpList as HL } from "@domain/list";
+
+interface RequestWithUser extends Request {
+  user?: User;
+}
+
+const userRepository = new UserRepository();
 export class AuthMiddleware {
-  public authenticateJWT = async (
+  public async authenticateJWT(
     req: RequestWithUser,
     res: Response,
     next: NextFunction
-  ): Promise<void> => {
-    let status: {
-      number: number;
-      message: string;
-    } = { number: 200, message: "" };
-
+  ): Promise<void> {
     const token = req.header("Authorization")?.split(" ")[1];
+    console.log(token);
+
     if (token) {
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
           id: number;
         };
-        const user = (await dataSource.getRepository(User).findOne({
+        console.log(decoded);
+
+        const user = (await userRepository.findOne({
           where: { id: decoded.id },
-          relations: ["roles"],
         })) as User;
 
         if (user) {
           req.user = user;
+          next();
         } else {
-          status.number = 401;
-          status.message = "Usuario no encontrado";
+          next(HL.UserNotFound);
         }
-
-        next();
       } catch (error) {
-        status.number = 400;
-        status.message = "Token inválido";
+        next(HL.InvalidToken);
       }
     } else {
-      status.number = 401;
-      status.message = "Token no proveído";
+      next(HL.TokenNotProvided);
     }
-    res.status(status.number).send(status.message);
-  };
-
-  public authorizeRoles = (allowedRoles: UserRoleEnum) => {
-    return (req: RequestWithUser, res: Response, next: NextFunction): void => {
-      if (!req.user) {
-        res.status(401).send("Usuario no autenticado");
-      } else {
-        const roleReq = req.user.role as UserRoleEnum;
-        const role: UserRoleEnum = roleReq ? roleReq : UserRoleEnum.USER;
-
-        if (!role === allowedRoles.includes(role as UserRoleEnum)) {
-          res.status(403).send("No tienes permiso para esta acción");
-        }
-      }
-      next();
-    };
-  };
+  }
 }

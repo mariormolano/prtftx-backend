@@ -1,31 +1,12 @@
 import { Router } from "express";
-import { AuthController } from "../../interface/controllers";
-import { AuthMiddleware } from "../../infrastructure/middlewares";
-import { RequestWithUser } from "../../domain/interfaces";
-import { UserRoleEnum } from "../../domain/enums";
-
-const { authenticateJWT, authorizeRoles } = new AuthMiddleware();
+import { AuthController } from "@inter/controllers";
+import { ErrorMiddleware } from "@infra/middlewares";
 const { register, login } = new AuthController();
+const { errorControl } = new ErrorMiddleware();
 
 const authRouter = Router();
 
-// Auth routes
-authRouter.post("/register", register);
-authRouter.post("/login", login);
-
-// Protected route example
-authRouter.get("/profile", authenticateJWT, (req: RequestWithUser, res) => {
-  res.json(req.user);
-});
-
-// Admin route example
-authRouter.get(
-  "/admin",
-  authenticateJWT,
-  authorizeRoles(UserRoleEnum.ADMIN),
-  (req, res) => {
-    res.send("Panel de administración");
-  }
-);
+authRouter.post("/register", register, errorControl);
+authRouter.post("/login", login, errorControl);
 
 export { authRouter };

@@ -1,3 +1,5 @@
 import { UserRepository } from "./userRepository";
+import { TypesRepository } from "./typesRepository";
+import { PropertiesRepository } from "./propertioesRepository";
 
-export { UserRepository };
+export { UserRepository, TypesRepository, PropertiesRepository };

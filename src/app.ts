@@ -1,5 +1,5 @@
 import express from "express";
-import { authRouter } from "./interface/routes";
+import { authRouter, typesRouter, propertiesRouter } from "./interface/routes";
 import { dataSource } from "./infrastructure/config";
 
 const app = express();
@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
   res.send("<h1>¡El servidor está funcionando!</h1>");
 });
 
-app.use("/api", authRouter);
+app.use("/api", authRouter, typesRouter, propertiesRouter);
 
 dataSource
   .initialize()

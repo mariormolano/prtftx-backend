@@ -1,3 +1,5 @@
 import { AuthMiddleware } from "./authMiddleware";
+import { RoleMiddleware } from "./roleMiddleware";
+import { ErrorMiddleware } from "./errorMiddleware";
 
-export { AuthMiddleware };
+export { AuthMiddleware, RoleMiddleware, ErrorMiddleware };
