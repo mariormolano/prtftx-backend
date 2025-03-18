@@ -1,11 +1,13 @@
 import express from "express";
 import { authRouter, typesRouter, propertiesRouter } from "./interface/routes";
 import { dataSource } from "./infrastructure/config";
+import cors from "cors";
 
 const app = express();
 const port = process.env.PORT || 3000;
 const server = process.env.SERVER || "http://localhost";
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {

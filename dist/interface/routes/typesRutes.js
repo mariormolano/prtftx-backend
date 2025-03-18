@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.typesRouter = void 0;
+const express_1 = require("express");
+const middlewares_1 = require("@infra/middlewares");
+const controllers_1 = require("@inter/controllers");
+const enums_1 = require("@domain/enums");
+const { authenticateJWT } = new middlewares_1.AuthMiddleware();
+const { authorizeRoles } = new middlewares_1.RoleMiddleware();
+const { getTypes, createTypes, updateTypes, deleteTypes, getTypesById } = new controllers_1.TypesController();
+const { errorControl } = new middlewares_1.ErrorMiddleware();
+const typesRouter = (0, express_1.Router)();
+exports.typesRouter = typesRouter;
+typesRouter.get("/types", authenticateJWT, getTypes, errorControl);
+typesRouter.get("/types/:id", authenticateJWT, getTypesById, errorControl);
+typesRouter.post("/types", authenticateJWT, authorizeRoles(enums_1.UserRoleEnum.ADMIN), createTypes, errorControl);
+typesRouter.put("/types/:id", authenticateJWT, authorizeRoles(enums_1.UserRoleEnum.ADMIN), updateTypes, errorControl);
+typesRouter.delete("/types/:id", authenticateJWT, authorizeRoles(enums_1.UserRoleEnum.ADMIN), deleteTypes, errorControl);
