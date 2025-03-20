@@ -5,19 +5,17 @@ export class PropertiesRepository {
   private propertiesRepository = dataSource.getRepository(Properties);
 
   public async findAll(): Promise<Properties[]> {
-    console.log("findAll");
     const count = await this.propertiesRepository.count();
     console.log(`Total properties: ${count}`);
 
-    try {
-      const properties = await this.propertiesRepository.find({
-        relations: ["types"],
-      });
-      console.log(properties);
-      return properties;
-    } catch (error) {
-      throw new Error("No se pudieron obtener las propiedades");
-    }
+    //try {
+    const properties = await this.propertiesRepository.find();
+
+    console.log(properties);
+    return properties;
+    // } catch (error) {
+    //   throw new Error("No se pudieron obtener las propiedades");
+    // }
   }
 
   public async findById(id: string): Promise<Properties> {
@@ -47,7 +45,7 @@ export class PropertiesRepository {
   }
 
   public async update(id: string, data: Properties): Promise<Properties> {
-    const { name, typeValue, typeOption } = data;
+    const { name, value } = data;
 
     try {
       const properties = await this.propertiesRepository.findOne({
@@ -58,8 +56,7 @@ export class PropertiesRepository {
       }
 
       properties.name = name;
-      properties.typeValue = typeValue;
-      properties.typeOption = typeOption;
+      properties.value = value;
 
       await this.propertiesRepository.save(properties);
       return (await this.propertiesRepository.findOne({

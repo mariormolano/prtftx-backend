@@ -1,4 +1,4 @@
 import { UserRoleEnum } from "./userRoleEnum";
-import { typeOptionEnum } from "./typeOptionEnum";
+import { valueEnum } from "./valueEnum";
 
-export { UserRoleEnum, typeOptionEnum };
+export { UserRoleEnum, valueEnum };

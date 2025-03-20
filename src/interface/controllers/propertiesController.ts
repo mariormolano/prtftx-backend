@@ -14,7 +14,8 @@ export class PropertiesController {
     try {
       const properties: Properties[] = await propertiesRepository.findAll();
       const count = properties.length;
-      res.json({ count, properties: [properties] });
+      const respuest = { count, properties: [properties] };
+      res.json(respuest);
     } catch (error) {
       next(HL.BadRequest);
     }
@@ -49,7 +50,11 @@ export class PropertiesController {
       console.log(data);
 
       const properties: Properties = await propertiesRepository.create(data);
-      res.json(properties);
+      res.json({
+        success: true,
+        message: "Propiedad creada",
+        properties,
+      });
     } catch (error) {
       next(HL.BadRequest);
     }
@@ -63,11 +68,18 @@ export class PropertiesController {
     try {
       const { id } = req.params;
       const data: Properties = req.body;
+      ("Actualizar propiedad");
+      console.log(data);
+
       const properties: Properties = await propertiesRepository.update(
         id,
         data
       );
-      res.json(properties);
+      res.json({
+        success: true,
+        message: "Propiedad actualizada",
+        properties,
+      });
     } catch (error) {
       next(HL.BadRequest);
     }
@@ -81,7 +93,10 @@ export class PropertiesController {
     try {
       const { id } = req.params;
       await propertiesRepository.delete(id);
-      res.json({ message: "Propiedad eliminada" });
+      res.json({
+        success: true,
+        message: "Propiedad eliminada",
+      });
     } catch (error) {
       next(HL.BadRequest);
     }

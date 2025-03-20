@@ -3,8 +3,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany,
   CreateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
 
 @Entity("types")
@@ -21,6 +22,7 @@ export class Types {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => Properties, (property) => property.types)
+  @ManyToMany(() => Properties)
+  @JoinTable()
   properties: Properties[];
 }

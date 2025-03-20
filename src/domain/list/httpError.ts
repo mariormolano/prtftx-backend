@@ -40,6 +40,10 @@ export const HttpList = {
     status: 401,
     message: "Token no proveído",
   },
+  TokenNotFound: {
+    status: 401,
+    message: "Token no encontrado",
+  },
   Unauthenticated: {
     status: 401,
     message: "Usuario no autenticado",

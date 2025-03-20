@@ -86,4 +86,24 @@ export class AuthController {
       next(HL.InternalServerError);
     }
   }
+
+  //token verification
+  public async verify(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token = req.headers.authorization?.split(" ")[1];
+      if (!token) {
+        next(HL.TokenNotFound);
+        return;
+      }
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+      res.json({
+        success: true,
+        message: "Token verificado",
+        decoded,
+      });
+    } catch (error) {
+      next(HL.InvalidToken);
+    }
+  }
 }

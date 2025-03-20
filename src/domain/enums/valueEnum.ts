@@ -1,4 +1,4 @@
-export enum typeOptionEnum {
+export enum valueEnum {
   TEXT = "TEXT",
   NUMBER = "NUMBER",
   DATE = "DATE",
