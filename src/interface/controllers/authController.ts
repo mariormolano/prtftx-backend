@@ -38,9 +38,13 @@ export class AuthController {
         password: hashedPassword,
       } as User);
 
-      await userRepository.save(user);
+      const newUser = await userRepository.save(user);
 
-      next(HL.UserSuccessfullyRegistered);
+      res.json({
+        success: true,
+        message: "Usuario registrado",
+        user: newUser,
+      });
     } catch (error) {
       next(HL.UserNoRegistered);
     }
@@ -71,7 +75,7 @@ export class AuthController {
         const token = jwt.sign(
           { id: user.id, role: user.role },
           process.env.JWT_SECRET!,
-          { expiresIn: "1h" }
+          { expiresIn: "8h" }
         );
         res.json({
           success: true,
