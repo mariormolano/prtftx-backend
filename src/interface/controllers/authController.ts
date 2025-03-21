@@ -9,7 +9,6 @@ import { HttpList as HL } from "@domain/list";
 const userRepository = new UserRepository();
 export class AuthController {
   public async register(req: Request, res: Response, next: NextFunction) {
-
     try {
       const { email, password, name, roles: rolesReq } = req.body;
       if (!email || !password || !name || !rolesReq) {
@@ -37,9 +36,8 @@ export class AuthController {
       } as User);
 
       const newUser = await userRepository.save(user);
-
       const token = jwt.sign(
-        { id: user.id, role: user.role },
+        { id: newUser.id, role: newUser.role },
         process.env.JWT_SECRET!,
         { expiresIn: "8h" }
       );
