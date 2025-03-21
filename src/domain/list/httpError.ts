@@ -1,14 +1,4 @@
 export const HttpList = {
-  // 201 Created
-  UserSuccessfullyRegistered: {
-    status: 201,
-    message: "Usuario registrado exitosamente",
-  },
-  SuccessfulLogin: {
-    status: 201,
-    message: "Inicio de sesión exitoso",
-  },
-
   // 400 Bad Request
   InvalidToken: {
     status: 400,
