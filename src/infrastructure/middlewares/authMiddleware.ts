@@ -36,6 +36,9 @@ export class AuthMiddleware {
           next(HL.UserNotFound);
         }
       } catch (error) {
+        console.log("Error al validar el token");
+        console.log(error);
+
         next(HL.InvalidToken);
       }
     } else {
