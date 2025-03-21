@@ -44,7 +44,7 @@ Este proyecto implementa un sistema CRUD para gestionar tipos y propiedades con 
    ```sh
    npm install
    ```
-3. Ejecutar rellenar los datos del .env
+3. Rellenar los datos del .env según los Prerrequisitos
    ```sh
    vim .env
    ```
