@@ -10,6 +10,7 @@ interface RequestWithUser extends Request {
 }
 
 const userRepository = new UserRepository();
+
 export class AuthMiddleware {
   public async authenticateJWT(
     req: RequestWithUser,
@@ -17,14 +18,12 @@ export class AuthMiddleware {
     next: NextFunction
   ): Promise<void> {
     const token = req.header("Authorization")?.split(" ")[1];
-    console.log(token);
 
     if (token) {
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
           id: number;
         };
-        console.log(decoded);
 
         const user = (await userRepository.findOne({
           where: { id: decoded.id },

@@ -9,8 +9,6 @@ import { HttpList as HL } from "@domain/list";
 const userRepository = new UserRepository();
 export class AuthController {
   public async register(req: Request, res: Response, next: NextFunction) {
-    console.log("Registro de usuario");
-    console.log(req.body);
 
     try {
       const { email, password, name, roles: rolesReq } = req.body;
@@ -40,10 +38,17 @@ export class AuthController {
 
       const newUser = await userRepository.save(user);
 
+      const token = jwt.sign(
+        { id: user.id, role: user.role },
+        process.env.JWT_SECRET!,
+        { expiresIn: "8h" }
+      );
+
       res.json({
         success: true,
         message: "Usuario registrado",
-        user: newUser,
+        role: newUser.role,
+        token,
       });
     } catch (error) {
       next(HL.UserNoRegistered);
@@ -63,13 +68,9 @@ export class AuthController {
         next(HL.IncompleteData);
         return;
       }
-      console.log("Login body", req.body);
-
       const user = await userRepository.findOne({
         where: { email },
       });
-
-      console.log(user);
 
       if (user && (await bcrypt.compare(password, user.password))) {
         const token = jwt.sign(

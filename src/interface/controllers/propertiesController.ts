@@ -13,9 +13,11 @@ export class PropertiesController {
   ): Promise<void> {
     try {
       const properties: Properties[] = await propertiesRepository.findAll();
-      const count = properties.length;
-      const respuest = { count, properties: [properties] };
-      res.json(respuest);
+      res.json({
+        success: true,
+        message: "Propiedades encontradas",
+        properties,
+      });
     } catch (error) {
       next(HL.BadRequest);
     }
@@ -31,7 +33,11 @@ export class PropertiesController {
       const properties: Properties | undefined =
         await propertiesRepository.findById(id);
       if (properties) {
-        res.json({ properties });
+        res.json({
+          success: true,
+          message: "Propiedad encontrada",
+          properties,
+        });
       } else {
         next(HL.NotFound);
       }
@@ -47,7 +53,6 @@ export class PropertiesController {
   ): Promise<void> {
     try {
       const data: Properties = req.body;
-      console.log(data);
 
       const properties: Properties = await propertiesRepository.create(data);
       res.json({
@@ -69,7 +74,6 @@ export class PropertiesController {
       const { id } = req.params;
       const data: Properties = req.body;
       ("Actualizar propiedad");
-      console.log(data);
 
       const properties: Properties = await propertiesRepository.update(
         id,

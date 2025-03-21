@@ -27,7 +27,6 @@ export class TypesRepository {
 
   public async create(data: Types): Promise<Types> {
     const { name, description, properties } = data;
-    console.log("Creando tipo: ", data);
 
     try {
       const type = await this.typeRepository.findOne({
@@ -40,7 +39,6 @@ export class TypesRepository {
       let newProperties: Properties[] = [];
 
       if (properties && properties.length > 0) {
-        console.log("Propiedades: ", properties);
 
         newProperties = await Promise.all(
           properties.map(async (property) => {
@@ -54,12 +52,9 @@ export class TypesRepository {
                 //types: newType,
               });
 
-              console.log("Nueva Porpiedad: ", newProperty);
-
               const saveProperty = await this.propertyRepository.save(
                 newProperty
               );
-              console.log("Porpiedad Guardada: ", saveProperty);
               return saveProperty;
             }
             return findProperty;
@@ -72,10 +67,8 @@ export class TypesRepository {
         description,
         properties: newProperties,
       });
-      console.log("Nuevo Tipo: ", newType);
 
       const retType = await this.typeRepository.save(newType);
-      console.log("Tipo Final: ", retType);
 
       return newType;
     } catch (error) {
@@ -98,7 +91,6 @@ export class TypesRepository {
       let newProperties: Properties[] = [];
 
       if (properties && properties.length > 0) {
-        console.log("Propiedades: ", properties);
 
         properties.map(async (property) => {
           const findProperty = await this.propertyRepository.findOne({
@@ -110,12 +102,10 @@ export class TypesRepository {
               value: property.value,
             });
 
-            console.log("Nueva Porpiedad: ", newProperty);
 
             const saveProperty = await this.propertyRepository.save(
               newProperty
             );
-            console.log("Porpiedad Guardada: ", saveProperty);
             newProperties.push(saveProperty);
           } else {
             newProperties.push(findProperty);

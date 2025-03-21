@@ -6,12 +6,10 @@ export class PropertiesRepository {
 
   public async findAll(): Promise<Properties[]> {
     const count = await this.propertiesRepository.count();
-    console.log(`Total properties: ${count}`);
 
     //try {
     const properties = await this.propertiesRepository.find();
 
-    console.log(properties);
     return properties;
     // } catch (error) {
     //   throw new Error("No se pudieron obtener las propiedades");

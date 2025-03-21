@@ -13,8 +13,11 @@ export class TypesController {
   ): Promise<void> {
     try {
       const types: Types[] = await typesRepository.findAll();
-      const count = types.length;
-      res.json({ count, types: [types] });
+      res.json({
+        success: true,
+        message: "Tipos encontrados",
+        types,
+      });
     } catch (error) {
       next(HL.BadRequest);
     }
@@ -29,7 +32,11 @@ export class TypesController {
       const { id } = req.params;
       const types: Types | undefined = await typesRepository.findById(id);
       if (types) {
-        res.json({ types });
+        res.json({
+          success: true,
+          message: "Tipo encontrado",
+          types,
+        });
       } else {
         next(HL.NotFound);
       }
@@ -65,7 +72,6 @@ export class TypesController {
     try {
       const { id } = req.params;
       const data: Types = req.body;
-      console.log("Actualizando tipo id", id, data);
 
       const types: Types = await typesRepository.update(id, data);
       res.json({
